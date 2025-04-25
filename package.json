@@ -1,0 +1,18 @@
+{
+  "name": "buncake",
+  "version": "0.1.0",
+  "description": "一个基于 Bun 和 TypeScript 的轻量级框架",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "bun src/main.ts",
+    "dev": "bun --watch src/main.ts",
+    "build": "bun build src/main.ts --outdir ./dist"
+  },
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
