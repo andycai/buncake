@@ -1,0 +1,15 @@
+{
+  "repoA": {
+    "url": "https://svn.example.com/repoA",
+    "username": "userA",
+    "password": "passwordA",
+    "localPath": "/path/to/repoA"
+  },
+  "repoB": {
+    "url": "https://svn.example.com/repoB",
+    "username": "userB",
+    "password": "passwordB",
+    "localPath": "/path/to/repoB"
+  },
+  "logFile": "sync.log"
+} 

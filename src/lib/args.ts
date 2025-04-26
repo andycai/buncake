@@ -1,17 +1,21 @@
 /**
- * 解析命令行参数，将 action.method 格式解析为 actionName 和 methodName
+ * 解析命令行参数
  */
-export function parseArgs(actionCommand: string): { actionName: string; methodName: string } {
-  const parts = actionCommand.split('.');
+export function parseArgs(command: string): { actionName: string; methodName: string } {
+  // 支持两种格式：
+  // 1. action.method
+  // 2. action.resources
+  const parts = command.split('.');
   
   if (parts.length !== 2) {
-    throw new Error('命令格式错误，应为 "action.method"');
+    throw new Error('无效的命令格式，请使用 action.method 或 action.resources 格式');
   }
   
   const [actionName, methodName] = parts;
   
-  if (!actionName || !methodName) {
-    throw new Error('动作名和方法名不能为空');
+  // 如果方法是 resources，则使用 cli 方法
+  if (methodName === 'resources') {
+    return { actionName, methodName: 'cli' };
   }
   
   return { actionName, methodName };
