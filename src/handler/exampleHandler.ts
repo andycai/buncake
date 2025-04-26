@@ -15,8 +15,10 @@ class ExampleHandler {
       const data = await exampleService.getData(id);
       return data;
     } catch (error) {
-      logger.error(`处理数据请求失败: ${error.message}`);
-      throw error;
+      if (error instanceof Error) {
+        logger.error(`处理数据请求失败: ${error.message}`);
+        throw error;
+      }
     }
   }
 
@@ -34,12 +36,14 @@ class ExampleHandler {
         },
       });
     } catch (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      if (error instanceof Error) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
     }
   }
 }

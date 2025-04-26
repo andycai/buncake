@@ -8,16 +8,11 @@ export interface ServerOptions {
   hostname: string;
 }
 
-export interface Request extends Request {
+// 修复 Request 接口定义
+export interface ServerRequest extends globalThis.Request {
   params: Record<string, string>;
   query: Record<string, string>;
 }
-
-// 修复 Request 接口定义
-export type ServerRequest = Request & {
-  params: Record<string, string>;
-  query: Record<string, string>;
-};
 
 export type Handler = (req: ServerRequest, res: Response) => Promise<Response | void> | Response | void;
 
@@ -85,7 +80,7 @@ export default class Server {
   /**
    * 处理请求
    */
-  private async handleRequest(req: Request): Promise<Response> {
+  private async handleRequest(req: globalThis.Request): Promise<Response> {
     // 扩展请求对象
     const serverReq = req as ServerRequest;
     
@@ -132,8 +127,10 @@ export default class Server {
         await next();
       }
     } catch (error) {
-      logger.error(`请求处理错误: ${error.message}`);
-      response = new Response(`Internal Server Error: ${error.message}`, { status: 500 });
+      if (error instanceof Error) {
+        logger.error(`请求处理错误: ${error.message}`);
+        response = new Response(`Internal Server Error: ${error.message}`, { status: 500 });
+      }
     }
 
     return response;
@@ -147,7 +144,7 @@ export default class Server {
       this.server = Bun.serve({
         port: this.options.port,
         hostname: this.options.hostname,
-        fetch: this.handleRequest.bind(this),
+        fetch: async (req: globalThis.Request) => this.handleRequest(req),
       });
 
       logger.info(`服务器已启动: http://${this.options.hostname}:${this.options.port}`);

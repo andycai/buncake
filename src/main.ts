@@ -26,7 +26,11 @@ async function main() {
       console.log(result);
     }
   } catch (error) {
-    console.error(`错误: ${error.message}`);
+    if (error instanceof Error) {
+      console.error(`错误: ${error.message}`);
+    } else {
+      console.error(`错误: ${error}`);
+    }
     process.exit(1);
   }
 }

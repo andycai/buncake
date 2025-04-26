@@ -41,7 +41,7 @@ export async function executeAction(
     
     throw new Error(`在 ${actionName}.ts 中找不到方法: ${methodName}`);
   } catch (error) {
-    if (error.code === 'MODULE_NOT_FOUND') {
+    if (error instanceof Error && 'code' in error && error.code === 'MODULE_NOT_FOUND') {
       throw new Error(`无法加载动作模块: ${actionName}`);
     }
     throw error;

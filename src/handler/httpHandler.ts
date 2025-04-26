@@ -63,8 +63,12 @@ class HttpHandler {
         },
       });
     } catch (error) {
-      logger.error(`创建用户失败: ${error.message}`);
-      
+      if (error instanceof Error) {
+        logger.error(`创建用户失败: ${error.message}`);
+      } else {
+        logger.error(`创建用户失败: 未知错误`);
+      }
+
       return new Response(JSON.stringify({ error: "无效的请求数据" }), {
         status: 400,
         headers: {

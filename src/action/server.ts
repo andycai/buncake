@@ -36,8 +36,11 @@ class ServerAction {
       
       return `服务器已启动，监听端口: ${serverPort}`;
     } catch (error) {
-      logger.error(`启动服务器失败: ${error.message}`);
-      return `启动服务器失败: ${error.message}`;
+      if (error instanceof Error) {
+        logger.error(`启动服务器失败: ${error.message}`);
+        return `启动服务器失败: ${error.message}`;
+      }
+      return `启动服务器失败: 未知错误`;
     }
   }
 
