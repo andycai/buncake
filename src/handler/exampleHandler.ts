@@ -19,6 +19,29 @@ class ExampleHandler {
       throw error;
     }
   }
+
+  /**
+   * HTTP 示例处理方法
+   */
+  async handleHttpRequest(req: any, res: any): Promise<any> {
+    const id = req.params.id || "default";
+    try {
+      const data = await this.handleDataRequest(id);
+      return new Response(JSON.stringify(data), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+  }
 }
 
 export default new ExampleHandler();
